@@ -6,6 +6,9 @@ final firstProvider = Provider((ref) => "Mide");
 
 final counterProvider = StateProvider((ref) => 0);
 
+final multiProvider = StateProvider((ref) => 0);
+
+
 // stateNotifierProvider;
 
 class RiverpodApp extends StatelessWidget {
@@ -50,11 +53,22 @@ class RiverpodHomePage extends StatelessWidget {
               );
             },
           ),
+          Consumer(
+            builder: (context, watch, child) {
+              final multiValue = watch(multiProvider);
+              return Text(
+                "${multiValue.state}",
+                style: TextStyle(
+                  fontSize: 30,
+                ),
+              );
+            },
+          ),
           SizedBox(
             height: 50,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Center(
                 child: ElevatedButton(
@@ -64,6 +78,14 @@ class RiverpodHomePage extends StatelessWidget {
                   child: Icon(Icons.add),
                 ),
               ),
+              // Center(
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       context.read(multiProvider).state;
+              //     },
+              //     child: Icon(Icons.dangerous),
+              //   ),
+              // ),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
