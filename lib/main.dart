@@ -1,33 +1,18 @@
+import 'package:counter_app/riverpod/riverpod_main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: RiverpodApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  _MyAppState createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
-
-  final String? title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _MyAppState extends State<MyApp> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -50,10 +35,49 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.yellow,
+      ),
+      home: MyHomePage(
+        title: 'Flutter Demo Home Page',
+        counter: _counter,
+        decreaseFunction: _decrementCounter,
+        incrementFunction: _incrementCounter,
+        refreshFunction: _refreshCounter,
+      ),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage(
+      {Key? key,
+      required this.title,
+      required this.counter,
+      required this.incrementFunction,
+      required this.decreaseFunction,
+      required this.refreshFunction})
+      : super(key: key);
+  final int counter;
+  final incrementFunction;
+  final decreaseFunction;
+  final refreshFunction;
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text(widget.title!),
+        title: Text(widget.title),
       ),
 
       body: Center(
@@ -66,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.all(18.0),
               child: Text(
-                '$_counter',
+                '${widget.counter}',
                 style: TextStyle(color: Colors.white, fontSize: 30),
               ),
             ),
@@ -74,12 +98,12 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 FloatingActionButton(
-                  onPressed: _decrementCounter,
+                  onPressed: widget.decreaseFunction,
                   tooltip: "Decrement",
                   child: Icon(Icons.remove),
                 ),
                 FloatingActionButton(
-                  onPressed: _incrementCounter,
+                  onPressed: widget.incrementFunction,
                   tooltip: 'Increment',
                   child: Icon(Icons.add),
                 ),
@@ -89,7 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
               style: ElevatedButton.styleFrom(primary: Colors.yellow),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => NewScreen(_counter, _incrementCounter),
+                  builder: (context) =>
+                      NewScreen(widget.counter, widget.incrementFunction),
                 ));
               },
               child: Text(
@@ -102,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: _refreshCounter,
+        onPressed: widget.refreshFunction,
         tooltip: 'Refresh',
         child: Icon(Icons.refresh),
       ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -110,11 +135,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class NewScreen extends StatelessWidget {
+class NewScreen extends StatefulWidget {
   final int counterFromHomePage;
   final dynamic incrementFunction;
+
   const NewScreen(this.counterFromHomePage, this.incrementFunction);
 
+  @override
+  _NewScreenState createState() => _NewScreenState();
+}
+
+class _NewScreenState extends State<NewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +159,7 @@ class NewScreen extends StatelessWidget {
             //comment
             Center(
               child: Text(
-                "$counterFromHomePage",
+                "${widget.counterFromHomePage}",
                 style: TextStyle(
                   fontSize: 50,
                 ),
@@ -146,7 +177,7 @@ class NewScreen extends StatelessWidget {
                   child: Icon(Icons.remove),
                 ),
                 FloatingActionButton(
-                  onPressed: incrementFunction,
+                  onPressed: widget.incrementFunction,
                   tooltip: 'Increment',
                   child: Icon(Icons.add),
                 ),
