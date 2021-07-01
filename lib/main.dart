@@ -2,9 +2,15 @@ import 'package:counter_app/riverpod/riverpod_main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
+
 void main() {
   runApp(ProviderScope(child: RiverpodApp()));
 }
+
+// void main() {
+//   runApp(MyApp());
+// }
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -14,6 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _counter = 0;
+  int _mcounter = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -30,6 +37,14 @@ class _MyAppState extends State<MyApp> {
   void _refreshCounter() {
     setState(() {
       _counter = 0;
+      _mcounter = 0;
+    });
+  }
+
+  void _multiplicationCounter(){
+    setState(() {
+      if (_counter >= 1) {
+      _mcounter = _counter * 2 ;}
     });
   }
 
@@ -46,6 +61,8 @@ class _MyAppState extends State<MyApp> {
         decreaseFunction: _decrementCounter,
         incrementFunction: _incrementCounter,
         refreshFunction: _refreshCounter,
+        multiplicationFunction: _multiplicationCounter,
+        mcounter: _mcounter,
       ),
     );
   }
@@ -58,12 +75,16 @@ class MyHomePage extends StatefulWidget {
       required this.counter,
       required this.incrementFunction,
       required this.decreaseFunction,
-      required this.refreshFunction})
+      required this.refreshFunction,
+      required this.multiplicationFunction,
+      required this.mcounter})
       : super(key: key);
   final int counter;
   final incrementFunction;
   final decreaseFunction;
   final refreshFunction;
+  final multiplicationFunction;
+  final int mcounter;
 
   final String title;
 
@@ -89,9 +110,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Padding(
               padding: const EdgeInsets.all(18.0),
-              child: Text(
-                '${widget.counter}',
-                style: TextStyle(color: Colors.white, fontSize: 30),
+              child: Column(
+                children: [
+                  Text(
+                    '${widget.counter}',
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  ),
+              Text(
+                '${widget.mcounter}',
+                style: TextStyle(color: Colors.white, fontSize: 30),),
+                ],
               ),
             ),
             Row(
@@ -109,12 +137,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+            FloatingActionButton(
+              onPressed: widget.multiplicationFunction,
+              tooltip: 'Multiply',
+              child: Icon(Icons.dangerous),
+            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(primary: Colors.yellow),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) =>
-                      NewScreen(widget.counter, widget.incrementFunction),
+                      NewScreen(widget.counter, widget.incrementFunction,
+                      widget.mcounter, widget.multiplicationFunction),
                 ));
               },
               child: Text(
@@ -138,8 +172,11 @@ class _MyHomePageState extends State<MyHomePage> {
 class NewScreen extends StatefulWidget {
   final int counterFromHomePage;
   final dynamic incrementFunction;
+  final int mcounterFromHomePage;
+  final dynamic multiplicationFunction;
 
-  const NewScreen(this.counterFromHomePage, this.incrementFunction);
+  const NewScreen(this.counterFromHomePage, this.incrementFunction,
+      this.mcounterFromHomePage, this.multiplicationFunction);
 
   @override
   _NewScreenState createState() => _NewScreenState();
@@ -158,11 +195,21 @@ class _NewScreenState extends State<NewScreen> {
           children: [
             //comment
             Center(
-              child: Text(
-                "${widget.counterFromHomePage}",
-                style: TextStyle(
-                  fontSize: 50,
-                ),
+              child: Column(
+                children: [
+                  Text(
+                    "${widget.counterFromHomePage}",
+                    style: TextStyle(
+                      fontSize: 50,
+                    ),
+                  ),
+                  Text(
+                    "${widget.mcounterFromHomePage}",
+                    style: TextStyle(
+                      fontSize: 50,
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
@@ -180,6 +227,11 @@ class _NewScreenState extends State<NewScreen> {
                   onPressed: widget.incrementFunction,
                   tooltip: 'Increment',
                   child: Icon(Icons.add),
+                ),
+                FloatingActionButton(
+                  onPressed: widget.multiplicationFunction,
+                  tooltip: 'Multiply',
+                  child: Icon(Icons.dangerous),
                 ),
               ],
             ),
