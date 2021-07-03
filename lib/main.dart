@@ -1,10 +1,17 @@
-import 'package:counter_app/riverpod/riverpod_main.dart';
+import 'package:counter_app/state_notifier_app/state_notifier_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(ProviderScope(child: RiverpodApp()));
+  runApp(ProviderScope(child: StateNotifierApp()));
+  // runApp(ProviderScope(child: RiverpodApp()));
+  // runApp(MyApp());
 }
+
+typedef ValueChanged<T> = void Function(T value);
+// typedef DecreaseByValueType<T> = void Function(T value);
+// typedef DecreaseByValueMultiParameters<T> = void Function(
+//     T value, T secondValue, T thirdValue);
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -14,6 +21,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _counter = 0;
+
+  void _multiplyByValue(int value) {
+    setState(() {
+      _counter = value * _counter;
+    });
+  }
+
+  void _decreaseByValue(int value) {
+    setState(() {
+      _counter = _counter - value;
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -35,6 +54,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    // _decreaseByValue();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -46,25 +66,30 @@ class _MyAppState extends State<MyApp> {
         decreaseFunction: _decrementCounter,
         incrementFunction: _incrementCounter,
         refreshFunction: _refreshCounter,
+        decreaseByValueFunction: _decreaseByValue,
+        increaseByValue: _multiplyByValue,
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage(
-      {Key? key,
-      required this.title,
-      required this.counter,
-      required this.incrementFunction,
-      required this.decreaseFunction,
-      required this.refreshFunction})
-      : super(key: key);
+  MyHomePage({
+    Key? key,
+    required this.title,
+    required this.counter,
+    required this.incrementFunction,
+    required this.decreaseFunction,
+    required this.refreshFunction,
+    required this.decreaseByValueFunction,
+    required this.increaseByValue,
+  }) : super(key: key);
   final int counter;
-  final incrementFunction;
-  final decreaseFunction;
-  final refreshFunction;
-
+  final Function() incrementFunction;
+  final Function() decreaseFunction;
+  final Function(int value) decreaseByValueFunction;
+  final Function() refreshFunction;
+  final ValueChanged<int> increaseByValue;
   final String title;
 
   @override
@@ -113,8 +138,8 @@ class _MyHomePageState extends State<MyHomePage> {
               style: ElevatedButton.styleFrom(primary: Colors.yellow),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      NewScreen(widget.counter, widget.incrementFunction),
+                  builder: (context) => NewScreen(widget.counter,
+                      widget.incrementFunction, widget.decreaseByValueFunction),
                 ));
               },
               child: Text(
@@ -139,13 +164,17 @@ class NewScreen extends StatefulWidget {
   final int counterFromHomePage;
   final dynamic incrementFunction;
 
-  const NewScreen(this.counterFromHomePage, this.incrementFunction);
+  final Function(int value) decreaseByValueFunction;
+
+  const NewScreen(this.counterFromHomePage, this.incrementFunction,
+      this.decreaseByValueFunction);
 
   @override
   _NewScreenState createState() => _NewScreenState();
 }
 
 class _NewScreenState extends State<NewScreen> {
+  var secondSecondScreenVariable = 5;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -180,6 +209,24 @@ class _NewScreenState extends State<NewScreen> {
                   onPressed: widget.incrementFunction,
                   tooltip: 'Increment',
                   child: Icon(Icons.add),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    widget.decreaseByValueFunction(secondSecondScreenVariable);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.remove),
+                    ],
+                  ),
                 ),
               ],
             ),

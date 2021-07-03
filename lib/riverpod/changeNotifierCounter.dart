@@ -7,7 +7,7 @@ class ChangeNotiferExampleScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final counterChangeNotiferValue = watch(counterChangeNotifierProvider);
+    final counterChangeNotifierValue = watch(counterChangeNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text("Counter change  Notifier"),
@@ -17,12 +17,12 @@ class ChangeNotiferExampleScreen extends ConsumerWidget {
         children: [
           Center(
             child: Text(
-              "${counterChangeNotiferValue.counter}",
+              "${counterChangeNotifierValue.counter}",
               style: TextStyle(color: Colors.red, fontSize: 40),
             ),
           ),
           Text(
-            "${counterChangeNotiferValue.age}",
+            "${counterChangeNotifierValue.age}",
             style: TextStyle(color: Colors.blue, fontSize: 40),
           ),
           Row(
