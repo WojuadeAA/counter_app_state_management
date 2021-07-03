@@ -25,6 +25,10 @@ class ChangeNotiferExampleScreen extends ConsumerWidget {
             "${counterChangeNotifierValue.age}",
             style: TextStyle(color: Colors.blue, fontSize: 40),
           ),
+          Text(
+            '${counterChangeNotiferValue.mcounter}',
+            style: TextStyle(color: Colors.blue, fontSize: 40),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -47,6 +51,15 @@ class ChangeNotiferExampleScreen extends ConsumerWidget {
                 child: Icon(Icons.add),
               ),
             ],
+          ),
+          FloatingActionButton(
+            onPressed: (){
+              context
+                  .read(counterChangeNotifierProvider.notifier)
+                  .multiplicationCounter();
+            },
+            tooltip: 'Multiply',
+            child: Icon(Icons.dangerous),
           ),
           SizedBox(
             height: 50,

@@ -6,6 +6,14 @@ class CounterChangeNotifier extends ChangeNotifier {
 
   int age = 0;
 
+  int mcounter = 0;
+
+  void multiplicationCounter(){
+    if (counter >= 1)
+      mcounter = counter * 2;
+    notifyListeners();
+  }
+
   void incrementCounter() {
     counter++;
     notifyListeners();
@@ -18,6 +26,8 @@ class CounterChangeNotifier extends ChangeNotifier {
 
   void refreshCounter() {
     counter = 0;
+    mcounter= 0;
+    notifyListeners();
   }
 
   void incrementAge() {
