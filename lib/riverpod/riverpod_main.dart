@@ -1,4 +1,4 @@
-import 'package:counter_app/riverpod/changeNotifierCounter.dart';
+import 'changeNotifierCounter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,7 +7,6 @@ final firstProvider = Provider((ref) => "Mide");
 final counterProvider = StateProvider((ref) => 0);
 
 final multiProvider = StateProvider((ref) => 0);
-
 
 // stateNotifierProvider;
 

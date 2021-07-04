@@ -1,9 +1,12 @@
-import 'package:counter_app/state_notifier_app/state_notifier_app.dart';
+import 'state_notifier_app/state_notifier_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'dataclass_state_notifier/view/data_class_ state_notifier_app.dart';
+
 void main() {
-  runApp(ProviderScope(child: StateNotifierApp()));
+  runApp(ProviderScope(child: DataClassStateNotifierApp()));
+  // runApp(ProviderScope(child: StateNotifierApp()));
   // runApp(ProviderScope(child: RiverpodApp()));
   // runApp(MyApp());
 }

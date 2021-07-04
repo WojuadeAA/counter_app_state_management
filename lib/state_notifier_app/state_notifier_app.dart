@@ -1,4 +1,4 @@
-import 'package:counter_app/state_notifier_app/stateNotifier.dart';
+import 'stateNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

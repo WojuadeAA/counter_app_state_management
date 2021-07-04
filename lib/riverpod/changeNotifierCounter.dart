@@ -1,4 +1,4 @@
-import 'package:counter_app/riverpod/changeNotifier.dart';
+import 'changeNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,7 +26,7 @@ class ChangeNotiferExampleScreen extends ConsumerWidget {
             style: TextStyle(color: Colors.blue, fontSize: 40),
           ),
           Text(
-            '${counterChangeNotiferValue.mcounter}',
+            '${counterChangeNotifierValue.mcounter}',
             style: TextStyle(color: Colors.blue, fontSize: 40),
           ),
           Row(
@@ -53,7 +53,7 @@ class ChangeNotiferExampleScreen extends ConsumerWidget {
             ],
           ),
           FloatingActionButton(
-            onPressed: (){
+            onPressed: () {
               context
                   .read(counterChangeNotifierProvider.notifier)
                   .multiplicationCounter();

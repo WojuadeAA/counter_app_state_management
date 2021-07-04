@@ -1,12 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DataClass {
-  int counter;
-  int age;
-  bool greaterThanFive;
-  DataClass(this.counter, this.age, this.greaterThanFive);
-}
-
 class CounterStateNotifier extends StateNotifier<int> {
   CounterStateNotifier() : super(0);
 
