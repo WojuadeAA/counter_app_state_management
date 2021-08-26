@@ -6,8 +6,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class DataClassStateNotifierApp extends StatelessWidget {
   const DataClassStateNotifierApp({Key? key}) : super(key: key);
 
+  int walk() {
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
+    var variable = walk;
+    variable();
+    var variable1 = walk();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
